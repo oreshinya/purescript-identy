@@ -163,8 +163,8 @@ Like this:
     "name": "User Name",
     "typename": "User",
     "comments": [
-      { "id": "1", "body": "Body 1", typename: "Comment" },
-      { "id": "2", "body": "Body 2", typename: "Comment" }
+      { "id": "1", "body": "Body 1", "typename": "Comment" },
+      { "id": "2", "body": "Body 2", "typename": "Comment" }
     ]
   }
 ]
