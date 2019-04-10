@@ -170,7 +170,7 @@ Like this:
 ]
 ```
 
-It is `normalize` function in `Identy.Normalizer`.
+By `typename`, you can format JSON with `normalize` function in `Identy.Normalizer`.
 
 It formats from the above JSON to the following:
 
