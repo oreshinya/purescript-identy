@@ -4,7 +4,7 @@ Welcome to `purescript-identy`.
 
 It is a state management utilities for [purescript-freedom](https://github.com/purescript-freedom/purescript-freedom).
 
-Have a fun to build complex application with `purescript-identy`.
+Have a fun to build complex application with `purescript-identy` ;)
 
 ## Installation
 
@@ -23,6 +23,8 @@ $ spago install identy
 ## Define the state shape by identy-style
 
 You should define the state shape by identy-style.
+
+**NOTE: The identy-style state shape force to treat id as string.**
 
 Like this:
 
@@ -67,8 +69,6 @@ type State =
   }
 ```
 
-**NOTE: The identy-style state shape force to treat id as string.**
-
 ## How to populate data received from API
 
 ### Case 1 - identy-style JSON response
@@ -81,14 +81,14 @@ If API respond a user with comments of its user, like this:
 
 ```json
 {
-  entities: {
-    user: { 1: { id: "1", name: "User Name" } }
-    comment: { 1: { id: "1", body: "Body 1" }, 2: { id: "2", body: "Body 2" } }
+  "entities": {
+    "user": { "1": { "id": "1", "name": "User Name" } }
+    "comment": { "1": { "id": "1", "body": "Body 1" }, "2": { "id": "2", "body": "Body 2" } }
   },
-  associations: {
-    userComments: { 1: [ "2", "1" ] }
+  "associations": {
+    "userComments": { "1": [ "2", "1" ] }
   },
-  result: "1"
+  "result": "1"
 }
 ```
 
@@ -102,14 +102,14 @@ Also if API respond array of user with comments, like this:
 
 ```json
 {
-  entities: {
-    user: { 1: { id: "1", name: "User Name" } }
-    comment: { 1: { id: "1", body: "Body 1" }, 2: { id: "2", body: "Body 2" } }
+  "entities": {
+    "user": { "1": { "id": "1", "name": "User Name" } }
+    "comment": { "1": { "id": "1", "body": "Body 1" }, "2": { "id": "2", "body": "Body 2" } }
   },
-  associations: {
-    userComments: { 1: [ "2", "1" ] }
+  "associations": {
+    "userComments": { "1": [ "2", "1" ] }
   },
-  result: [ "1" ]
+  "result": [ "1" ]
 }
 ```
 
@@ -138,11 +138,11 @@ Many API responds nested JSON like this:
 ```json
 [
   {
-    id: "1",
-    name: " User Name",
-    comments: [
-      { id: "1", body: "Body 1" },
-      { id: "2", body: "Body 2" } 
+    "id": "1",
+    "name": "User Name",
+    "comments": [
+      { "id": "1", "body": "Body 1" },
+      { "id": "2", "body": "Body 2" } 
     ]
   }
 ]
@@ -158,14 +158,14 @@ It formats from the above JSON to the following:
 
 ```json
 {
-  entities: {
-    user: { 1: { id: "1", name: "User Name" } }
-    comment: { 1: { id: "1", body: "Body 1" }, 2: { id: "2", body: "Body 2" } }
+  "entities": {
+    "user": { "1": { "id": "1", "name": "User Name" } }
+    "comment": { "1": { "id": "1", "body": "Body 1" }, "2": { "id": "2", "body": "Body 2" } }
   },
-  associations: {
-    userComments: { 1: [ "2", "1" ] }
+  "associations": {
+    "userComments": { "1": [ "2", "1" ] }
   },
-  result: [ "1" ]
+  "result": [ "1" ]
 }
 ```
 

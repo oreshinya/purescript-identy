@@ -1,6 +1,7 @@
 # Philosophy
 
 This document explains basic idea of `purescript-identy`.
+
 It is very important for building a complex application in the real world.
 
 ## State management in `purescript-freedom`
@@ -43,7 +44,7 @@ type Task =
   }
 ```
 
-## State shape 1
+### Try state shape 1
 
 If you don't think about anything, the state shape probably looks like this.
 
@@ -62,7 +63,7 @@ There may be same tasks in `allTasks` and `myTasks`, so you may need to update b
 
 This seems to have to be solved.
 
-## State shape 2
+### Try state shape 2
 
 Next, let's consider state shape without duplicates.
 
@@ -147,7 +148,9 @@ this approach is not new, it is mentioned in `redux` doc and also it is adopted 
 
 `purescript-identy` is based on the above idea.
 
-it expects the state shape like this:
+It expects the following state shape.
+
+You will get tolerance to complex UI by this state shape.
 
 ```purescript
 type User =
@@ -189,5 +192,3 @@ type State =
   , scenes :: Scenes
   }
 ```
-
-You will get tolerance to complex UI by this state shape.
