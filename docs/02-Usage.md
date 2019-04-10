@@ -82,7 +82,7 @@ If API respond a user with comments of its user, like this:
 ```json
 {
   "entities": {
-    "user": { "1": { "id": "1", "name": "User Name" } }
+    "user": { "1": { "id": "1", "name": "User Name" } },
     "comment": { "1": { "id": "1", "body": "Body 1" }, "2": { "id": "2", "body": "Body 2" } }
   },
   "associations": {
@@ -103,7 +103,7 @@ Also if API respond array of user with comments, like this:
 ```json
 {
   "entities": {
-    "user": { "1": { "id": "1", "name": "User Name" } }
+    "user": { "1": { "id": "1", "name": "User Name" } },
     "comment": { "1": { "id": "1", "body": "Body 1" }, "2": { "id": "2", "body": "Body 2" } }
   },
   "associations": {
@@ -159,7 +159,7 @@ It formats from the above JSON to the following:
 ```json
 {
   "entities": {
-    "user": { "1": { "id": "1", "name": "User Name" } }
+    "user": { "1": { "id": "1", "name": "User Name" } },
     "comment": { "1": { "id": "1", "body": "Body 1" }, "2": { "id": "2", "body": "Body 2" } }
   },
   "associations": {
