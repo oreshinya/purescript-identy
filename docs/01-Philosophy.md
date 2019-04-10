@@ -122,7 +122,7 @@ This is one of the answer.
 ```purescript
 type State =
   { tasks :: Object Task
-  , allTaskIds :: Array String
+  , allTasks :: Array String
   , myTasks :: Array String
   }
 ```
