@@ -16,29 +16,29 @@ import Simple.JSON (class ReadForeign, E, read)
 -- |
 -- | API in the world often respond nested-style object like this:
 -- |
--- | ```javascript
+-- | ```
 -- | {
--- |   id: "1",
--- |   name: "User Name",
--- |   comments: [
--- |     { id: "2", body: "Comment Body 2" },
--- |     { id: "1", body: "Comment Body 1" }
+-- |   "id": "1",
+-- |   "name": "User Name",
+-- |   "comments": [
+-- |     { "id": "2", "body": "Comment Body 2" },
+-- |     { "id": "1", "body": "Comment Body 1" }
 -- |   ]
 -- | }
 -- | ```
 -- |
 -- | `normalize` formats object from nested-style to identy-style.
 -- |
--- | ```javascript
+-- | ```
 -- | {
--- |   entities: {
--- |     user: { 1: { id: "1", name: "User Name" } },
--- |     comment: { 1: { id: "1", body: "Comment Body 1" }, 2: { id: "2", body: "Comment Body 2" } }
+-- |   "entities": {
+-- |     "user": { "1": { "id": "1", "name": "User Name" } },
+-- |     "comment": { "1": { "id": "1", "body": "Comment Body 1" }, "2": { "id": "2", "body": "Comment Body 2" } }
 -- |   },
--- |   associations: {
--- |     userComments: { 1: [ "2", "1" ] } // from parent user id to comment ids.
+-- |   "associations": {
+-- |     "userComments": { "1": [ "2", "1" ] } // from parent user id to comment ids.
 -- |   },
--- |   result: "1" // This is root entity id. In this case, user id.
+-- |   "result": "1" // This is root entity id. In this case, user id.
 -- | }
 -- | ```
 -- |
@@ -50,14 +50,14 @@ import Simple.JSON (class ReadForeign, E, read)
 -- |
 -- | For example:
 -- |
--- | ```javascript
+-- | ```
 -- | {
--- |   id: "1",
--- |   name: "User Name",
--- |   typename: "User"
--- |   comments: [
--- |     { id: "2", body: "Comment Body 2", typename: "Comment" },
--- |     { id: "1", body: "Comment Body 1", typename: "Comment" }
+-- |   "id": "1",
+-- |   "name": "User Name",
+-- |   "typename": "User"
+-- |   "comments": [
+-- |     { "id": "2", "body": "Comment Body 2", "typename": "Comment" },
+-- |     { "id": "1", "body": "Comment Body 1", "typename": "Comment" }
 -- |   ]
 -- | }
 -- | ```

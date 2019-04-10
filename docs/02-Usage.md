@@ -152,6 +152,24 @@ Many API responds nested JSON like this:
 
 `purescript-identy` has a formatter to identy-style from the above JSON.
 
+As prerequisite, each entity need a property `typename` that is set type name with upper camel case.
+
+Like this:
+
+```json
+[
+  {
+    "id": "1",
+    "name": "User Name",
+    "typename": "User",
+    "comments": [
+      { "id": "1", "body": "Body 1", typename: "Comment" },
+      { "id": "2", "body": "Body 2", typename: "Comment" }
+    ]
+  }
+]
+```
+
 It is `normalize` function in `Identy.Normalizer`.
 
 It formats from the above JSON to the following:
