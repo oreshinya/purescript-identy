@@ -95,7 +95,7 @@ Looks like a great idea.
 
 But wait, it has problems.
 
-we should consider with a wider perspective.
+We should consider with a wider perspective.
 
 In this case, it seems that this is good because the example is simple.
 
@@ -142,7 +142,7 @@ A lot of implemantion are not needed, because you can store filtered and ordered
 
 In other words, **this approach is a method in which entity itself is not directly linked, but it represents binding to UI or another entity through id**.
 
-this approach is not new, it is mentioned in `redux` doc and also it is adopted for inner state of `apollo-client`, and so on.
+This approach is not new, it is mentioned in `redux` doc and also it is adopted for inner state of `apollo-client`, and so on.
 
 ## With `purescript-identy`
 
