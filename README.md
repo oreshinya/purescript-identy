@@ -2,7 +2,7 @@
 
 [![Latest release](http://img.shields.io/github/release/oreshinya/purescript-identy.svg)](https://github.com/oreshinya/purescript-identy/releases)
 
-An optionated UI state management utilities for [purescript-freedom](https://github.com/purescript-freedom/purescript-freedom).
+An opinionated UI state management utilities for [purescript-freedom](https://github.com/purescript-freedom/purescript-freedom).
 
 [Guide](https://github.com/oreshinya/purescript-identy/tree/master/docs)
 
