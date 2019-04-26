@@ -153,36 +153,52 @@ It expects the following state shape.
 You will get tolerance to complex UI by this state shape.
 
 ```purescript
+import Data.Newtype (class Newtype)
+import Identy.ObjectMap (ObjectMap)
+import Simple.JSON (class ReadForeign)
+
+newtype UserId = UserId String
+newtype TeamId = TeamId String
+newtype CommentId = CommentId String
+
+derive newtype instance readForeignUserId :: ReadForeign UserId
+derive newtype instance readForeignTeamId :: ReadForeign TeamId
+derive newtype instance readForeignCommentId :: ReadForeign CommentId
+
+derive instance newtypeUserId :: Newtype UserId _
+derive instance newtypeTeamId :: Newtype TeamId _
+derive instance newtypeCommentId :: Newtype CommentId _
+
 type User =
-  { id :: String
+  { id :: UserId
   , name :: String
   }
 
 type Comment =
-  { id :: String
+  { id :: CommentId
   , body :: String
   }
 
 type Team =
-  { id :: String
+  { id :: TeamId
   , name :: String
   }
 
 -- keys are id, values are entity.
 type Entities =
-  { user :: Object User
-  , comment :: Object Comment
-  , team :: Object Team
+  { user :: ObjectMap UserId User
+  , comment :: ObjectMap CommentId Comment
+  , team :: ObjectMap TeamId Team
   }
 
 type Associations =
-  { userComments :: Object (Array String) -- keys are user id, values are array of comment id.
-  , userTeam :: Object String -- keys are user id, values are team id.
+  { userComments :: ObjectMap UserId (Array CommentId)
+  , userTeam :: ObjectMap UserId TeamId
   }
 
 -- State per UI
 type Scenes =
-  { home :: { users :: Array String } -- UI state for home scene. users are array of user id.
+  { home :: { users :: Array UserId }
   }
 
 -- The identy-style state shape
