@@ -266,7 +266,7 @@ type Associations =
 
 -- State per UI
 type Scenes =
-  { home :: { users :: Array UserId }
+  { home :: { users :: Array UserId, selectedUser :: Maybe UserId }
   }
 
 -- The identy-style state shape
