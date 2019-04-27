@@ -6,9 +6,10 @@ import Prelude
 
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
-import Foreign.Object (empty, insert, singleton)
 import Identy.Normalizer (normalize)
+import Identy.ObjectMap (empty, insert, singleton)
 import Simple.JSON (write)
+import Test.Types (CommentId(..), ReplyId(..), TeamId(..), UserId(..))
 import Test.Unit (TestSuite, failure, suite, test)
 import Test.Unit.Assert as Assert
 
@@ -63,32 +64,32 @@ testNormalizeArray =
     expected =
       { entities:
           { user: empty
-              # insert "1" { id: "1", name: "ichiro" }
-              >>> insert "2" { id: "2", name: "oreshinya" }
-              >>> insert "3" { id: "3", name: "shinjo" }
+              # insert (UserId "1") { id: UserId "1", name: "ichiro" }
+              >>> insert (UserId "2") { id: UserId "2", name: "oreshinya" }
+              >>> insert (UserId "3") { id: UserId "3", name: "shinjo" }
           , team: empty
-              # insert "1000" { id: "1000", name: "Seattle Mariners" }
-              >>> insert "1001" { id: "1001", name: "freelancer" }
+              # insert (TeamId "1000") { id: TeamId "1000", name: "Seattle Mariners" }
+              >>> insert (TeamId "1001") { id: TeamId "1001", name: "freelancer" }
           , comment: empty
-              # insert "1" { id: "1", body: "BODY 1" }
-              >>> insert "10" { id: "10", body: "BODY 10" }
+              # insert (CommentId "1") { id: CommentId "1", body: "BODY 1" }
+              >>> insert (CommentId "10") { id: CommentId "10", body: "BODY 10" }
           , reply: empty
-              # insert "222" { id: "222", body: "Reply 222" }
-              >>> insert "333" { id: "333", body: "Reply 333" }
+              # insert (ReplyId "222") { id: ReplyId "222", body: "Reply 222" }
+              >>> insert (ReplyId "333") { id: ReplyId "333", body: "Reply 333" }
           }
       , associations:
           { userTeam: empty
-              # insert "1" "1000"
-              >>> insert "2" "1001"
+              # insert (UserId "1") (TeamId "1000")
+              >>> insert (UserId "2") (TeamId "1001")
           , userComments: empty
-              # insert "1" []
-              >>> insert "2" [ "10", "1" ]
-              >>> insert "3" []
+              # insert (UserId "1") []
+              >>> insert (UserId "2") [ CommentId "10", CommentId "1" ]
+              >>> insert (UserId "3") []
           , commentReplies: empty
-              # insert "10" [ "333", "222" ]
-              >>> insert "1" []
+              # insert (CommentId "10") [ ReplyId "333", ReplyId "222" ]
+              >>> insert (CommentId "1") []
           }
-      , result: [ "2", "1", "3" ]
+      , result: [ UserId "2", UserId "1", UserId "3" ]
       }
 
 testNormalizeSingle :: TestSuite
@@ -111,14 +112,14 @@ testNormalizeSingle =
 
     expected =
       { entities:
-          { user: singleton "101" { id: "101", name: "oreshinya" }
+          { user: singleton (UserId "101") { id: UserId "101", name: "oreshinya" }
           , comment: empty
-              # insert "1" { id: "1", body: "BODY 1" }
-              >>> insert "2" { id: "2", body: "BODY 2" }
+              # insert (CommentId "1") { id: CommentId "1", body: "BODY 1" }
+              >>> insert (CommentId "2") { id: CommentId "2", body: "BODY 2" }
           }
       , associations:
-          { userActiveComments: singleton "101" [ "2", "1" ]
-          , userPinnedComment: singleton "101" "2"
+          { userActiveComments: singleton (UserId "101") [ CommentId "2", CommentId "1" ]
+          , userPinnedComment: singleton (UserId "101") (CommentId "2")
           }
-      , result: "101"
+      , result: UserId "101"
       }
