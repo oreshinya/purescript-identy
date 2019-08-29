@@ -16,10 +16,10 @@ testPopulate :: TestSuite
 testPopulate =
   test "populate" do
     let first = initialState # populate firstResponse
-          >>> _ { scenes { home { users = firstResponse.result } } }
+          >>> _ { home { users = firstResponse.result } }
     Assert.equal firstExpected first
     let more = first # populate moreResponse
-          >>> \s -> s { scenes { home { users = concat [ moreResponse.result, s.scenes.home.users ] } } }
+          >>> \s -> s { home { users = concat [ moreResponse.result, s.home.users ] } }
     Assert.equal moreExpected more
     let moreComments = more # populate moreCommentsResponse
           >>> \s -> s { associations { userComments = update (Just <<< cons moreCommentsResponse.result) (UserId "1") s.associations.userComments } }
@@ -43,7 +43,7 @@ testPopulate =
       , associations:
           { userComments: singleton (UserId "1") [ CommentId "11" ]
           }
-      , scenes: { home: { users: [ UserId "1" ] } }
+      , home: { users: [ UserId "1" ] }
       }
     moreResponse =
       { entities:
@@ -69,7 +69,7 @@ testPopulate =
               # insert (UserId "1") [ CommentId "11" ]
               >>> insert (UserId "51") [ CommentId "51" ]
           }
-      , scenes: { home: { users: [ UserId "51", UserId "1" ] } }
+      , home: { users: [ UserId "51", UserId "1" ] }
       }
     moreCommentsResponse =
       { entities:
@@ -93,12 +93,12 @@ testPopulate =
               # insert (UserId "1") [ CommentId "111", CommentId "11" ]
               >>> insert (UserId "51") [ CommentId "51" ]
           }
-      , scenes: { home: { users: [ UserId "51", UserId "1" ] } }
+      , home: { users: [ UserId "51", UserId "1" ] }
       }
 
 initialState :: State
 initialState =
   { entities: { user: empty, comment: empty }
   , associations: { userComments: empty }
-  , scenes: { home: { users: [] } }
+  , home: { users: [] }
   }

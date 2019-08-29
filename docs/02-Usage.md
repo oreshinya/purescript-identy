@@ -72,16 +72,11 @@ type Associations =
   , userTeam :: ObjectMap UserId TeamId
   }
 
--- State per UI
-type Scenes =
-  { home :: { users :: Array UserId }
-  }
-
 -- The identy-style state shape
 type State =
   { entities :: Entities
   , associations :: Associations
-  , scenes :: Scenes
+  , home :: { users :: Array UserId }
   }
 ```
 
@@ -142,7 +137,7 @@ In `Action` of `purescript-freedom`:
 ```purescript
 fetchUsers = do
   res <- lift $ API.get "/users" -- res is decoded already.
-  reduce $ populate res >>> _ { scenes { home { users = res.result } } }
+  reduce $ populate res >>> _ { home { users = res.result } }
 ```
 
 ### Case 2 - General format JSON response
@@ -211,7 +206,7 @@ fetchUsers = do
   case normalize res of -- reformat and decode.
     Left _ -> doSomething
     Right res' ->
-      reduce $ populate res' >>> _ { scenes { home { users = res'.result } } }
+      reduce $ populate res' >>> _ { home { users = res'.result } }
 ```
 
 ## How to select data used in views
@@ -264,16 +259,11 @@ type Associations =
   , userTeam :: ObjectMap UserId TeamId
   }
 
--- State per UI
-type Scenes =
-  { home :: { users :: Array UserId, selectedUser :: Maybe UserId }
-  }
-
 -- The identy-style state shape
 type State =
   { entities :: Entities
   , associations :: Associations
-  , scenes :: Scenes
+  , home :: { users :: Array UserId, selectedUser :: Maybe UserId }
   }
 ```
 
@@ -288,7 +278,7 @@ users :: State -> Array User
 users state =
   resources
     state.entities.user
-    state.scenes.home.users
+    state.home.users
 ```
 
 ### Select selected-user for home view
@@ -302,7 +292,7 @@ selectedUser :: State -> Maybe User
 selectedUser state =
   resource
     state.entities.user
-    state.scenes.home.selectedUser
+    state.home.selectedUser
 ```
 
 ### Select association: Comments of user

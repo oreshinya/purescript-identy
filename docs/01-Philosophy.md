@@ -196,15 +196,10 @@ type Associations =
   , userTeam :: ObjectMap UserId TeamId
   }
 
--- State per UI
-type Scenes =
-  { home :: { users :: Array UserId }
-  }
-
 -- The identy-style state shape
 type State =
   { entities :: Entities
   , associations :: Associations
-  , scenes :: Scenes
+  , home :: { users :: Array UserId }
   }
 ```

@@ -50,12 +50,8 @@ type Associations =
   { userComments :: ObjectMap UserId (Array CommentId)
   }
 
-type Scenes =
-  { home :: { users :: Array UserId }
-  }
-
 type State =
   { entities :: Entities
   , associations :: Associations
-  , scenes :: Scenes
+  , home :: { users :: Array UserId }
   }
