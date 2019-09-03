@@ -6,9 +6,9 @@ import Prelude
 
 import Data.Array (concat, cons)
 import Data.Maybe (Maybe(..))
-import Identy.ObjectMap (empty, insert, singleton, update)
+import Identy.ObjectMap (ObjectMap, empty, insert, singleton, update)
 import Identy.Populater (populate)
-import Test.Types (CommentId(..), UserId(..), State)
+import Test.Types (CommentId(..), State, UserId(..), Comment)
 import Test.Unit (TestSuite, test)
 import Test.Unit.Assert as Assert
 
@@ -47,11 +47,11 @@ testPopulate =
       }
     moreResponse =
       { entities:
-          { user: singleton (UserId "51") { id: UserId "51", name: "ichiro" }
-          , comment: singleton (CommentId "51") { id: CommentId "51", body: "BODY 51" }
+          { user: Just $ singleton (UserId "51") { id: UserId "51", name: "ichiro" }
+          , comment: (Nothing :: Maybe (ObjectMap CommentId Comment))
           }
       , associations:
-          { userComments: singleton (UserId "51") [ CommentId "51" ]
+          { userComments: (Nothing :: Maybe (ObjectMap UserId (Array CommentId)))
           }
       , result: [ UserId "51" ]
       }
@@ -60,14 +60,10 @@ testPopulate =
           { user: empty
               # insert (UserId "1") { id: UserId "1", name: "oreshinya" }
               >>> insert (UserId "51") { id: UserId "51", name: "ichiro" }
-          , comment: empty
-              # insert (CommentId "11") { id: CommentId "11", body: "BODY 11" }
-              >>> insert (CommentId "51") { id: CommentId "51", body: "BODY 51" }
+          , comment: singleton (CommentId "11") { id: CommentId "11", body: "BODY 11" }
           }
       , associations:
-          { userComments: empty
-              # insert (UserId "1") [ CommentId "11" ]
-              >>> insert (UserId "51") [ CommentId "51" ]
+          { userComments: singleton (UserId "1") [ CommentId "11" ]
           }
       , home: { users: [ UserId "51", UserId "1" ] }
       }
@@ -85,13 +81,10 @@ testPopulate =
               >>> insert (UserId "51") { id: UserId "51", name: "ichiro" }
           , comment: empty
               # insert (CommentId "11") { id: CommentId "11", body: "BODY 11" }
-              >>> insert (CommentId "51") { id: CommentId "51", body: "BODY 51" }
               >>> insert (CommentId "111") { id: CommentId "111", body: "BODY 111" }
           }
       , associations:
-          { userComments: empty
-              # insert (UserId "1") [ CommentId "111", CommentId "11" ]
-              >>> insert (UserId "51") [ CommentId "51" ]
+          { userComments: singleton (UserId "1") [ CommentId "111", CommentId "11" ]
           }
       , home: { users: [ UserId "51", UserId "1" ] }
       }
