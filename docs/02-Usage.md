@@ -135,8 +135,14 @@ And you set `result` to any state.
 In `Action` of `purescript-freedom`:
 
 ```purescript
+type Response =
+  { entities :: { user :: ObjectMap UserId User, comment :: ObjectMap CommentId Comment }
+  , associations :: { userComments :: ObjectMap UserId (Array CommentId) }
+  , result :: Array UserId
+  }
+
 fetchUsers = do
-  res <- lift $ API.get "/users" -- res is decoded already.
+  (res :: Response) <- lift $ API.get "/users" -- Fetch and decode.
   reduce $ populate res >>> _ { home { users = res.result } }
 ```
 
@@ -200,12 +206,20 @@ It formats from the above JSON to the following:
 
 You can populate response with `normalize` and `populate` function.
 
+**Note: `normalize` dynamically formats a json, so each props in `entities` and `associations` should be `Maybe`.**
+
 ```purescript
+type Response =
+  { entities :: { user :: Maybe (ObjectMap UserId User), comment :: Maybe (ObjectMap CommentId Comment) }
+  , associations :: { userComments :: Maybe (ObjectMap UserId (Array CommentId)) }
+  , result :: Array UserId
+  }
+
 fetchUsers = do
   res <- lift $ API.get "/users" -- res is Foreign.
   case normalize res of -- reformat and decode.
     Left _ -> doSomething
-    Right res' ->
+    Right (res' :: Response) ->
       reduce $ populate res' >>> _ { home { users = res'.result } }
 ```
 
