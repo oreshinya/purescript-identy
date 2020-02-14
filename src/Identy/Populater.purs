@@ -54,7 +54,7 @@ instance objectUnionMaybe :: ObjectUnion from to => ObjectUnion (Maybe from) to 
   unionObject Nothing to = to
   unionObject (Just from) to = unionObject from to
 
-class ObjectPopulatable (rl :: RL.RowList) (from :: # Type) (to :: # Type) | rl -> from where
+class ObjectPopulatable (rl :: RL.RowList Type) (from :: Row Type) (to :: Row Type) | rl -> from where
   populateObjects :: RLProxy rl -> { | from } -> { | to } -> { | to }
 
 instance objectPopulatableNil :: ObjectPopulatable RL.Nil () to where
