@@ -2,7 +2,7 @@
 
 Welcome to `purescript-identy`.
 
-It is a state management utilities for [purescript-freedom](https://github.com/purescript-freedom/purescript-freedom).
+It is a state management utilities.
 
 Have a fun to build complex application with `purescript-identy` ;)
 
@@ -132,7 +132,7 @@ You can use `populate` function in `Identy.Populater` module.
 
 And you set `result` to any state.
 
-In `Action` of `purescript-freedom`:
+For example:
 
 ```purescript
 type Response =
@@ -143,7 +143,7 @@ type Response =
 
 fetchUsers = do
   (res :: Response) <- lift $ API.get "/users" -- Fetch and decode.
-  reduce $ populate res >>> _ { home { users = res.result } }
+  updateState $ populate res >>> _ { home { users = res.result } }
 ```
 
 ### Case 2 - General format JSON response
@@ -220,7 +220,7 @@ fetchUsers = do
   case normalize res of -- reformat and decode.
     Left _ -> doSomething
     Right (res' :: Response) ->
-      reduce $ populate res' >>> _ { home { users = res'.result } }
+      updateState $ populate res' >>> _ { home { users = res'.result } }
 ```
 
 ## How to select data used in views

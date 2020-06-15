@@ -4,11 +4,9 @@ This document explains basic idea of `purescript-identy`.
 
 It is very important for building a complex application in the real world.
 
-## State management in `purescript-freedom`
+## State management
 
-In `purescript-freedom`, whole of app state is managed in one data type.
-
-Like this:
+For example, there are state like this:
 
 ```purescript
 { users:
