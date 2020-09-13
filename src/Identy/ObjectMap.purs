@@ -1,5 +1,7 @@
 module Identy.ObjectMap
   ( ObjectMap
+  , fromFoldable
+  , toUnfoldable
   , keys
   , values
   , update
@@ -17,11 +19,16 @@ module Identy.ObjectMap
 
 import Prelude
 
+import Control.Monad.ST as ST
+import Data.Array as Array
 import Data.Foldable (class Foldable)
 import Data.Maybe (Maybe)
 import Data.Newtype (class Newtype, unwrap, wrap)
 import Data.Traversable (class Traversable)
+import Data.Tuple (Tuple(..))
+import Data.Unfoldable (class Unfoldable)
 import Foreign.Object as Object
+import Foreign.Object.ST as STObject
 import Simple.JSON (class ReadForeign, class WriteForeign, readImpl, writeImpl)
 
 newtype ObjectMap k v = ObjectMap (Object.Object v)
@@ -40,6 +47,28 @@ instance readForeignObjectMap :: (Newtype k String, ReadForeign v) => ReadForeig
 
 instance writeForeignObjectMap :: (Newtype k String, WriteForeign v) => WriteForeign (ObjectMap k v) where
   writeImpl = unwrap >>> writeImpl
+
+fromFoldable
+  :: forall f k v
+   . Foldable f
+  => Newtype k String
+  => f (Tuple k v)
+  -> ObjectMap k v
+fromFoldable l = wrap $ Object.runST do
+  s <- STObject.new
+  ST.foreach (Array.fromFoldable l) \(Tuple k v) ->
+    void $ STObject.poke (unwrap k) v s
+  pure s
+
+toUnfoldable
+  :: forall f k v
+   . Unfoldable f
+  => Newtype k String
+  => ObjectMap k v
+  -> f (Tuple k v)
+toUnfoldable = unwrap
+  >>> (Object.toArrayWithKey (wrap >>> Tuple))
+  >>> Array.toUnfoldable
 
 keys :: forall k v. Newtype k String => ObjectMap k v -> Array k
 keys x = wrap <$> (Object.keys $ unwrap x)
