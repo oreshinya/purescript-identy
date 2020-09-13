@@ -22,9 +22,12 @@ import Prelude
 import Control.Monad.ST as ST
 import Data.Array as Array
 import Data.Foldable (class Foldable)
+import Data.FoldableWithIndex (class FoldableWithIndex, foldMapWithIndex, foldlWithIndex, foldrWithIndex)
+import Data.FunctorWithIndex (class FunctorWithIndex, mapWithIndex)
 import Data.Maybe (Maybe)
 import Data.Newtype (class Newtype, unwrap, wrap)
 import Data.Traversable (class Traversable)
+import Data.TraversableWithIndex (class TraversableWithIndex, traverseWithIndex)
 import Data.Tuple (Tuple(..))
 import Data.Unfoldable (class Unfoldable)
 import Foreign.Object as Object
@@ -41,6 +44,17 @@ derive newtype instance functorObjectMap :: Functor (ObjectMap k)
 derive newtype instance foldableObjectMap :: Foldable (ObjectMap k)
 derive newtype instance traversableObjectMap :: Traversable (ObjectMap k)
 derive instance newtypeObjectMap :: Newtype (ObjectMap k v) _
+
+instance functorWithIndexObjectMap :: (Newtype k String) => FunctorWithIndex k (ObjectMap k) where
+  mapWithIndex f = unwrap >>> mapWithIndex (wrap >>> f) >>> wrap
+
+instance foldableWithIndexObjectMap :: (Newtype k String) => FoldableWithIndex k (ObjectMap k) where
+  foldrWithIndex f acc = unwrap >>> foldrWithIndex (wrap >>> f) acc
+  foldlWithIndex f acc = unwrap >>> foldlWithIndex (wrap >>> f) acc
+  foldMapWithIndex f = unwrap >>> foldMapWithIndex (wrap >>> f)
+
+instance traversableWithIndexObjectMap :: (Newtype k String) => TraversableWithIndex k (ObjectMap k) where
+  traverseWithIndex f x = wrap <$> traverseWithIndex (wrap >>> f) (unwrap x)
 
 instance readForeignObjectMap :: (Newtype k String, ReadForeign v) => ReadForeign (ObjectMap k v) where
   readImpl x = wrap <$> readImpl x
@@ -67,7 +81,7 @@ toUnfoldable
   => ObjectMap k v
   -> f (Tuple k v)
 toUnfoldable = unwrap
-  >>> (Object.toArrayWithKey (wrap >>> Tuple))
+  >>> Object.toArrayWithKey (wrap >>> Tuple)
   >>> Array.toUnfoldable
 
 keys :: forall k v. Newtype k String => ObjectMap k v -> Array k
