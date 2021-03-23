@@ -9,12 +9,12 @@ module Identy.Populater
 import Prelude
 
 import Data.Maybe (Maybe(..))
-import Data.Symbol (class IsSymbol, SProxy(..))
+import Data.Symbol (class IsSymbol)
 import Identy.ObjectMap (ObjectMap, union)
 import Prim.Row as Row
 import Prim.RowList as RL
 import Record (get, modify)
-import Type.Data.RowList (RLProxy(..))
+import Type.Prelude (Proxy(..))
 import Unsafe.Coerce (unsafeCoerce)
 
 -- | Merge identy-style records.
@@ -28,8 +28,8 @@ populate
   -> { entities :: { | r1' }, associations :: { | r2' } | to }
   -> { entities :: { | r1' }, associations :: { | r2' } | to }
 populate from =
-  modify (SProxy :: _ "entities") (populateObjects (RLProxy :: _ rl1) from.entities)
-    >>> modify (SProxy :: _ "associations") (populateObjects (RLProxy :: _ rl2) from.associations)
+  modify (Proxy :: _ "entities") (populateObjects (Proxy :: _ rl1) from.entities)
+    >>> modify (Proxy :: _ "associations") (populateObjects (Proxy :: _ rl2) from.associations)
 
 populateObject
   :: forall sym fromom toom fromtail totail from to
@@ -37,7 +37,7 @@ populateObject
   => ObjectUnion fromom toom
   => Row.Cons sym fromom fromtail from
   => Row.Cons sym toom totail to
-  => SProxy sym
+  => Proxy sym
   -> { | from }
   -> { | to }
   -> { | to }
@@ -54,8 +54,8 @@ instance objectUnionMaybe :: ObjectUnion from to => ObjectUnion (Maybe from) to 
   unionObject Nothing to = to
   unionObject (Just from) to = unionObject from to
 
-class ObjectPopulatable (rl :: RL.RowList) (from :: # Type) (to :: # Type) | rl -> from where
-  populateObjects :: RLProxy rl -> { | from } -> { | to } -> { | to }
+class ObjectPopulatable (rl :: RL.RowList Type) (from :: Row Type) (to :: Row Type) | rl -> from where
+  populateObjects :: Proxy rl -> { | from } -> { | to } -> { | to }
 
 instance objectPopulatableNil :: ObjectPopulatable RL.Nil () to where
   populateObjects _ _ to = to
@@ -69,5 +69,5 @@ instance objectPopulatableCons
      )
   => ObjectPopulatable (RL.Cons sym fromom rlfromtail) from to where
   populateObjects _ from to =
-    populateObjects (RLProxy :: _ rlfromtail) (unsafeCoerce from)
-      $ populateObject (SProxy :: _ sym) from to
+    populateObjects (Proxy :: _ rlfromtail) (unsafeCoerce from)
+      $ populateObject (Proxy :: _ sym) from to

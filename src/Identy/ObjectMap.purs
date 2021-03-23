@@ -1,5 +1,5 @@
 module Identy.ObjectMap
-  ( ObjectMap
+  ( ObjectMap(..)
   , fromFoldable
   , toUnfoldable
   , keys
@@ -34,6 +34,7 @@ import Foreign.Object as Object
 import Foreign.Object.ST as STObject
 import Simple.JSON (class ReadForeign, class WriteForeign, readImpl, writeImpl)
 
+newtype ObjectMap :: Type -> Type -> Type
 newtype ObjectMap k v = ObjectMap (Object.Object v)
 
 derive newtype instance eqObjectMap :: (Eq v) => Eq (ObjectMap k v)
