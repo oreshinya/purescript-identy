@@ -1,6 +1,6 @@
 'use strict';
 
-exports.normalize_ = function(left, right, foreign) {
+export function normalize_(left, right, foreign) {
   const state = { entities: {}, associations: {} };
 
   function run(res) {
