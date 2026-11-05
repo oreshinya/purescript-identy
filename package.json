@@ -3,18 +3,13 @@
   "name": "purescript-identy",
   "scripts": {
     "spago": "spago",
-    "watch": "spago build -w -u '--strict --stash --censor-lib --is-lib=.spago'",
+    "watch": "chokidar 'src/**/*.purs' 'src/**/*.js' -c 'spago build' --initial",
     "clean": "rm -rf output",
-    "test": "spago -x test.dhall test -u '--strict --stash --censor-lib --is-lib=.spago'",
-    "bump-version": "LC_ALL=C.UTF-8 spago bump-version --no-dry-run",
-    "pulp:publish": "pulp publish",
-    "pulp:login": "pulp login"
+    "test": "spago test"
   },
   "dependencies": {
-    "bower": "^1.8.14",
-    "pulp": "^16.0.2",
+    "chokidar-cli": "^3.0.0",
     "purescript": "^0.15.6",
-    "purescript-psa": "^0.8.2",
-    "spago": "^0.20.9"
+    "spago": "1.0.5"
   }
 }
